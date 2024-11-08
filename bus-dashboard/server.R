@@ -24,11 +24,11 @@ sc1meta$orig.ident = factor(sc1meta$orig.ident, levels = c("Ctrl_1","Ctrl_2", "C
 ### Useful stuff 
 # Colour palette 
 cList = list(c("grey85","#FFF7EC","#FEE8C8","#FDD49E","#FDBB84", 
-              "#FC8D59","#EF6548","#D7301F","#B30000","#7F0000"), 
-            c("#4575B4","#74ADD1","#ABD9E9","#E0F3F8","#FFFFBF", 
-              "#FEE090","#FDAE61","#F46D43","#D73027")[c(1,1:9,9)], 
-            c("#FDE725","#AADC32","#5DC863","#27AD81","#21908C", 
-              "#2C728E","#3B528B","#472D7B","#440154")) 
+            "#FC8D59","#EF6548","#D7301F","#B30000","#7F0000"), 
+          c("#4575B4","#74ADD1","#ABD9E9","#E0F3F8","#FFFFBF", 
+            "#FEE090","#FDAE61","#F46D43","#D73027")[c(1,1:9,9)], 
+          c("#FDE725","#AADC32","#5DC863","#27AD81","#21908C", 
+            "#2C728E","#3B528B","#472D7B","#440154")) 
 names(cList) = c("White-Red", "Blue-Yellow-Red", "Yellow-Green-Purple") 
 
 # Panel sizes 
@@ -70,17 +70,17 @@ if(!XYval){
     axis.text.y = element_blank(), axis.ticks.y = element_blank()) 
 } 
 return(oupTheme) 
-} 
+}
 
 ### Common plotting functions 
 # Plot cell information on dimred 
 scDRcell <- function(inpConf, inpMeta, inpdrX, inpdrY, inp1, inpsub1, inpsub2, 
-                    inpsiz, inpcol, inpord, inpfsz, inpasp, inptxt, inplab){ 
+                  inpsiz, inpcol, inpord, inpfsz, inpasp, inptxt, inplab){ 
 if(is.null(inpsub1)){inpsub1 = inpConf$UI[1]} 
 # Prepare ggData 
 ggData = inpMeta[, c(inpConf[UI == inpdrX]$ID, inpConf[UI == inpdrY]$ID, 
-                      inpConf[UI == inp1]$ID, inpConf[UI == inpsub1]$ID),  
-                  with = FALSE] 
+                    inpConf[UI == inp1]$ID, inpConf[UI == inpsub1]$ID),  
+                with = FALSE] 
 colnames(ggData) = c("X", "Y", "val", "sub") 
 rat = (max(ggData$X) - min(ggData$X)) / (max(ggData$Y) - min(ggData$Y)) 
 bgCells = FALSE 
@@ -519,7 +519,7 @@ ggData$val = expm1(ggData$val)
 ggData = ggData[, .(val = mean(val), prop = sum(val>0) / length(sampleID)), 
                 by = c("geneName", "grpBy")] 
 ggData$val = log1p(ggData$val) 
-
+  
 tmp= ggData[, sum(val), by="geneName"]
 shiny::validate(need(length(tmp$V1[tmp$V1==0])==0, paste0("Gene '", unique(tmp$geneName[tmp$V1==0]), "' has very low expression across all the samples such that plotting bubbleplot can lead to errors, remove this gene to plot.
 Please plot Violin/Boxplot plot to understand this gene better.")))
@@ -554,7 +554,7 @@ if(inpRow){
 
 } else { 
   ggData$geneName = factor(ggData$geneName, levels = rev(geneList$gene)) 
-  
+
   
 } 
 if(inpCol){ 
@@ -570,7 +570,7 @@ if(inpCol){
           axis.ticks = element_blank(), axis.text.x = element_blank(), 
           axis.text.y = element_text(color = "white")) 
   ggData$grpBy = factor(ggData$grpBy, levels = hcCol$labels$label) 
-  
+
 } 
   
 # Actual plot according to plottype 
@@ -1138,7 +1138,7 @@ output$sc1d1oup.png <- downloadHandler(
                       input$sc1d1cols, input$sc1d1fsz, save = TRUE) ) 
 }) 
   
-observeEvent(input$sub_broad_cells, {
+  observeEvent(input$sub_broad_cells, {
   if(input$sub_broad_cells== "Broad Cell clusters"){
     updateSelectInput(session, inputId = "celltype", label = "Select which cells to show",
                       choices = unique(deg_broad$cell_type), selected = NULL)
